@@ -27,7 +27,7 @@ public class Paddle extends Sprite implements Commons {
 			x = WIDTH - i_width;
 	}
 
-	public void kexPressed(KeyEvent e) {
+	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
 
 		if (key == KeyEvent.VK_LEFT)
