@@ -65,7 +65,7 @@ public class Board extends JPanel implements Commons {
 				RenderingHints.VALUE_RENDER_QUALITY);
 
 		if (ingame) {
-			drawObJect(graphics2d);
+			drawObject(graphics2d);
 		} else {
 			gameFinished(graphics2d);
 		}
@@ -82,7 +82,7 @@ public class Board extends JPanel implements Commons {
 				Commons.WIDTH / 2);
 	}
 
-	private void drawObJect(Graphics2D graphics2d) {
+	private void drawObject(Graphics2D graphics2d) {
 		graphics2d.drawImage(ball.getImage(), ball.getX(), ball.getY(),
 				ball.getWidth(), ball.getHeight(), this);
 		graphics2d.drawImage(paddle.getImage(), paddle.getX(), paddle.getY(),
@@ -179,29 +179,34 @@ public class Board extends JPanel implements Commons {
 		}
 
 		for (int i = 0; i < N_OF_BRICKS; i++) {
-			int ballLeft = (int) ball.getRect().getMinX();
-			int ballHeigth = (int) ball.getRect().getHeight();
-			int ballWidth = (int) ball.getRect().getWidth();
-			int ballTop = (int) ball.getRect().getMinY();
 
-			Point pointRight = new Point(ballLeft + ballWidth + 1, ballTop);
-			Point pointLeft = new Point(ballLeft - 1, ballTop);
-			Point pointTop = new Point(ballLeft, ballTop - 1);
-			Point pointBottom = new Point(ballLeft, ballTop + ballHeigth + 1);
+			if ((ball.getRect()).intersects(bricks[i].getRect())) {
+				
+				int ballLeft = (int) ball.getRect().getMinX();
+				int ballHeigth = (int) ball.getRect().getHeight();
+				int ballWidth = (int) ball.getRect().getWidth();
+				int ballTop = (int) ball.getRect().getMinY();
 
-			if (!bricks[i].isDestroyed()) {
-				if (bricks[i].getRect().contains(pointRight)) {
-					ball.setXDir(-1);
-				} else if (bricks[i].getRect().contains(pointLeft)) {
-					ball.setXDir(1);
+				Point pointRight = new Point(ballLeft + ballWidth + 1, ballTop);
+				Point pointLeft = new Point(ballLeft - 1, ballTop);
+				Point pointTop = new Point(ballLeft, ballTop - 1);
+				Point pointBottom = new Point(ballLeft, ballTop + ballHeigth
+						+ 1);
+
+				if (!bricks[i].isDestroyed()) {
+					if (bricks[i].getRect().contains(pointRight)) {
+						ball.setXDir(-1);
+					} else if (bricks[i].getRect().contains(pointLeft)) {
+						ball.setXDir(1);
+					}
+
+					if (bricks[i].getRect().contains(pointTop)) {
+						ball.setYDir(1);
+					} else if (bricks[i].getRect().contains(pointBottom)) {
+						ball.setYDir(-1);
+					}
+					bricks[i].setDestroyed(true);
 				}
-
-				if (bricks[i].getRect().contains(pointTop)) {
-					ball.setYDir(1);
-				} else if (bricks[i].getRect().contains(pointBottom)) {
-					ball.setYDir(-1);
-				}
-				bricks[i].setDestroyed(true);
 			}
 		}
 	}
